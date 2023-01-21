@@ -4,7 +4,7 @@ using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class KlasRepository : IRepository<Klas>
+    public class KlasRepository : IKlasRepository<Klas>
     {
         private readonly DataContext _dataContext;
 
@@ -51,6 +51,15 @@ namespace WebAPI.Repositories
                 .Where(k => k.Id == id)
                 .Include(k => k.Gebruikers)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Klas>> GetKlassenByOpleidingId(int opleidingId)
+        {
+            return await _dataContext.Klassen
+                .Include(k => k.Onderwijsuitvoeringen
+                .Where(o => o.Onderwijsmodule.OpleidingId == opleidingId))
+                .Select(k => k)
+                .ToListAsync();
         }
 
         public async Task Update(int id, Klas entity)

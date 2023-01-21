@@ -13,6 +13,20 @@ namespace WebAPI.Repositories
             _dataContext = dataContext;
         }
 
+        public async Task AddGebruikerToKlas(int id, Gebruiker entity)
+        {
+            var gebruiker = await _dataContext.Gebruikers.Include(g => g.Klassen).FirstOrDefaultAsync(g => g.Id == entity.Id);
+            if (gebruiker != null && entity != null)
+            {
+                var klasIds = entity.Klassen!.Select(k => k.Id).ToList();
+                var klassen = await _dataContext.Klassen.Where(k => klasIds.Contains(k.Id)).ToListAsync();
+                gebruiker.Klassen.Clear();
+                gebruiker.Klassen.AddRange(klassen);
+
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
         public async Task Create(Gebruiker entity)
         {
             if (entity != null)
@@ -30,7 +44,7 @@ namespace WebAPI.Repositories
 
         public async Task Delete(int id)
         {
-            var gebruiker = await _dataContext.Gebruikers.FirstOrDefaultAsync(u => u.Id == id);
+            var gebruiker = await _dataContext.Gebruikers.FirstOrDefaultAsync(g => g.Id == id);
             if (gebruiker != null)
             {
                 _dataContext.Gebruikers.Remove(gebruiker);
@@ -41,35 +55,35 @@ namespace WebAPI.Repositories
         public async Task<List<Gebruiker>> GetAll()
         {
             return await _dataContext.Gebruikers
-                .Include(u => u.Rol)
-                .Include(u => u.Opleiding)
-                .Include(u => u.Opleidingsprofiel)
+                .Include(g => g.Klassen)
+                .Include(g => g.Rol)
                 .ToListAsync();
         }
 
         public async Task<Gebruiker?> GetById(int id)
         {
             return await _dataContext.Gebruikers
-                .Where(u => u.Id == id)
-                .Include(u => u.Rol)
-                .Include(u => u.Opleiding)
-                .Include(u => u.Opleidingsprofiel)
+                .Where(g => g.Id == id)
+                .Include(g => g.Rol)
+                .Include(g => g.Klassen)
+                .Include(g => g.TentamensVanStudent)
+                .Include(g => g.Beoordelingsmodellen)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Gebruiker?> GetUserByEmail(string email)
+        public async Task<Gebruiker?> GetGebruikerByEmail(string email)
         {
             return await _dataContext.Gebruikers
-                .Where(u => u.Email == email)
-                .Include(u => u.Rol)
-                .Include(u => u.Opleiding)
-                .Include(u => u.Opleidingsprofiel)
+                .Where(g => g.Email == email)
+                .Include(g => g.Rol)
+                .Include(g => g.Opleiding)
+                .Include(g => g.Opleidingsprofiel)
                 .FirstOrDefaultAsync();
         }
 
         public async Task Update(int id, Gebruiker entity)
         {
-            var gebruiker = await _dataContext.Gebruikers.FirstOrDefaultAsync(u => u.Id == entity.Id);
+            var gebruiker = await _dataContext.Gebruikers.FirstOrDefaultAsync(g => g.Id == entity.Id);
             if (gebruiker != null && entity != null)
             {
                 var isExistingEmail = await IsExsisting(id, entity);
@@ -77,14 +91,14 @@ namespace WebAPI.Repositories
                 {
                     ThrowHttpRequestException();
                 }
-
+                
                 gebruiker.RolId = entity.RolId;
                 gebruiker.OpleidingId = entity.OpleidingId;
                 gebruiker.OpleidingsprofielId = entity.OpleidingsprofielId;
                 gebruiker.Email = entity.Email;
                 gebruiker.Code = entity.Code;
                 gebruiker.Voornaam = entity.Voornaam;
-                gebruiker.Achternaam = entity.Achternaam;
+                gebruiker.Achternaam = entity.Achternaam;                
 
                 _dataContext.Gebruikers.Update(gebruiker);
                 await _dataContext.SaveChangesAsync();

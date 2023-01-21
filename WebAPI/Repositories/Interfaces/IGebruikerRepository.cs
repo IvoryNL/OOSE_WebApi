@@ -4,6 +4,8 @@ namespace WebAPI.Repositories.Interfaces
 {
     public interface IGebruikerRepository<T> : IRepository<T>
     {
-        Task<T?> GetUserByEmail(string email);
+        Task<T?> GetGebruikerByEmail(string email);
+
+        Task AddGebruikerToKlas(int id, T entity);
     }
 }

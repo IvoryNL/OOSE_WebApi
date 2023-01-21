@@ -12,9 +12,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class KlasController : ControllerBase
     {
-        private readonly IRepository<Klas> _klasRepository;
+        private readonly IKlasRepository<Klas> _klasRepository;
 
-        public KlasController(IRepository<Klas> klasRepository)
+        public KlasController(IKlasRepository<Klas> klasRepository)
         {
             _klasRepository = klasRepository;
         }
@@ -30,6 +30,13 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<Klas>> Get(int id)
         {
             var result = await _klasRepository.GetById(id);
+            return Ok(result);
+        }
+
+        [HttpGet("GetKlassenByOpleidingId/{id}")]
+        public async Task<ActionResult<List<Klas>>> GetByOpleidingId(int id)
+        {
+            var result = await _klasRepository.GetKlassenByOpleidingId(id);
             return Ok(result);
         }
 

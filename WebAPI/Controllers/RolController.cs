@@ -12,30 +12,30 @@ namespace WebAPI.Controllers
     [Authorize]
     public class RolController : ControllerBase
     {
-        private readonly IRepository<Rol> _roleRepository;
+        private readonly IRepository<Rol> _rolRepository;
 
-        public RolController(IRepository<Rol> repository)
+        public RolController(IRepository<Rol> rolRepository)
         {
-            _roleRepository = repository;
+            _rolRepository = rolRepository;
         }
 
         [HttpGet("GetAll")]
         public async Task<ActionResult<List<Rol>>> Get()
         {
-            var result = await _roleRepository.GetAll();
+            var result = await _rolRepository.GetAll();
             return Ok(result);
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Rol>> Get(int id)
         {
-            var result = await _roleRepository.GetById(id);
+            var result = await _rolRepository.GetById(id);
             return Ok(result);
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPost("Create")]
-        public async Task<IActionResult> Post([FromBody] Rol role)
+        public async Task<IActionResult> Post([FromBody] Rol rol)
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                await _roleRepository.Create(role);
+                await _rolRepository.Create(rol);
             }
             catch (HttpRequestException ex)
             {
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Rol role)
+        public async Task<IActionResult> Put(int id, [FromBody] Rol rol)
         {
             if (!ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                await _roleRepository.Update(id, role);
+                await _rolRepository.Update(id, rol);
             }
             catch (HttpRequestException ex)
             {
@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _roleRepository.Delete(id);
+            await _rolRepository.Delete(id);
             return Ok();
         }
     }

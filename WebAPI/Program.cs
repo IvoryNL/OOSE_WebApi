@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 using WebAPI;
@@ -17,7 +18,9 @@ using WebAPI.Repositories.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore); ;
+
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -55,19 +58,18 @@ builder.Services.AddScoped<IRepository<Beoordelingsdimensie>, Beoordelingsdimens
 builder.Services.AddScoped<IRepository<Beoordelingsmodel>, BeoordelingsmodelRepository>();
 builder.Services.AddScoped<IRepository<Beoordelingsonderdeel>, BeoordelingsonderdeelRepository>();
 builder.Services.AddScoped<IGebruikerRepository<Gebruiker>, GebruikerRepository>();
-builder.Services.AddScoped<IRepository<Klas>, KlasRepository>();
+builder.Services.AddScoped<IKlasRepository<Klas>, KlasRepository>();
 builder.Services.AddScoped<IRepository<Leerdoel>, LeerdoelRepository>();
 builder.Services.AddScoped<IRepository<Leeruitkomst>, LeeruitkomstRepository>();
 builder.Services.AddScoped<IRepository<Les>, LesRepository>();
 builder.Services.AddScoped<IRepository<Lesmateriaal>, LesmateriaalRepository>();
 builder.Services.AddScoped<IRepository<LesmateriaalInhoud>, LesmateriaalInhoudRepository>();
 builder.Services.AddScoped<IRepository<LesmateriaalType>, LesmateriaalTypeRepository>();
-builder.Services.AddScoped<IRepository<LesmateriaalVorm>, LesmateriaalVormRepository>();
 builder.Services.AddScoped<IRepository<Onderwijseenheid>, OnderwijseenheidRepository>();
 builder.Services.AddScoped<IOnderwijsmoduleRepository<Onderwijsmodule>, OnderwijsmoduleRepository>();
 builder.Services.AddScoped<IRepository<Onderwijsuitvoering>, OnderwijsuitvoeringRepository>();
 builder.Services.AddScoped<IRepository<Opleiding>, OpleidingRepository>();
-builder.Services.AddScoped<IRepository<Opleidingsprofiel>, OpleidingsprofielRepository>();
+builder.Services.AddScoped<IOpleidingsprofielRepository<Opleidingsprofiel>, OpleidingsprofielRepository>();
 builder.Services.AddScoped<IRepository<Planning>, PlanningRepository>();
 builder.Services.AddScoped<IRepository<Rol>, RolRepository>();
 builder.Services.AddScoped<IRepository<Status>, StatusRepository>();
@@ -77,9 +79,9 @@ builder.Services.AddScoped<IRepository<Toetsinschrijving>, ToetsinschrijvingRepo
 builder.Services.AddScoped<IRepository<Vorm>, VormRepository>();
 
 // Mappers
-builder.Services.AddScoped<IEntityMapper<Gebruiker, GebruikerModelDto>, GebruikerModelMapper>();
+builder.Services.AddScoped<IEntityMapper<Gebruiker, CreateGebruikerModelDto>, CreateGebruikerModelMapper>();
 builder.Services.AddScoped<IDtoMapper<Gebruiker, IngelogdeGebruikerModelDto>, IngelogdeGebruikerMapper>();
-builder.Services.AddScoped<IDtoMapper<Gebruiker, GebruikerModelMetRolDto>, GebruikerModelMetRolMapper>();
+builder.Services.AddScoped<IMapper<Gebruiker, VolledigeGebruikerModelDto>, VolledigeGebruikerMapper>();
 
 // Handlers
 builder.Services.AddScoped<IHandlerAsync<bool>, ConsistentieCheckHandlerAsync>();

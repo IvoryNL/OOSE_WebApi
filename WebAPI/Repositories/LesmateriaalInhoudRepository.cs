@@ -54,17 +54,11 @@ namespace WebAPI.Repositories
             {
                 lesmateriaalVorm.LesmateriaalId = entity.LesmateriaalId;
                 lesmateriaalVorm.Inhoud = entity.Inhoud;
-                lesmateriaalVorm.Versie = await GetNewVersion(id);
+                lesmateriaalVorm.Versie += 0.1m;
 
                 _dataContext.LesmateriaalInhoud.Update(lesmateriaalVorm);
                 await _dataContext.SaveChangesAsync();
             }
-        }
-
-        private async Task<decimal> GetNewVersion(int id)
-        {
-            var lestmateriaalVorm = await _dataContext.LesmateriaalVormen.Where(l => l.Id == id).FirstOrDefaultAsync();
-            return lestmateriaalVorm!.Versie + 0.01m;
         }
     }
 }

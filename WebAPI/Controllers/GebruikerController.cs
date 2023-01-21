@@ -14,42 +14,42 @@ namespace WebAPI.Controllers
     [Authorize]
     public class GebruikerController : ControllerBase
     {
-        private readonly IGebruikerRepository<Gebruiker> _userRepository;
-        private readonly IEntityMapper<Gebruiker, GebruikerModelDto> _userModelMapper;
-        private readonly IDtoMapper<Gebruiker, GebruikerModelMetRolDto> _userModelWithRoleMapper;
+        private readonly IGebruikerRepository<Gebruiker> _gebruikerRepository;
+        private readonly IEntityMapper<Gebruiker, CreateGebruikerModelDto> _createGebruikerModelMapper;
+        private readonly IMapper<Gebruiker, VolledigeGebruikerModelDto> _volledigeGebruikerModelMapper;
 
         public GebruikerController(
-            IGebruikerRepository<Gebruiker> userRepository,
-            IEntityMapper<Gebruiker, GebruikerModelDto> userMapper,
-            IDtoMapper<Gebruiker, GebruikerModelMetRolDto> userModelWithRoleMapper)
+            IGebruikerRepository<Gebruiker> gebruikerRepository,
+            IEntityMapper<Gebruiker, CreateGebruikerModelDto> createGebruikerModelMapper,
+            IMapper<Gebruiker, VolledigeGebruikerModelDto> volledigeGebruikerModelMapper)
         {
-            _userRepository = userRepository;
-            _userModelMapper = userMapper;
-            _userModelWithRoleMapper = userModelWithRoleMapper;
+            _gebruikerRepository = gebruikerRepository;
+            _createGebruikerModelMapper = createGebruikerModelMapper;
+            _volledigeGebruikerModelMapper = volledigeGebruikerModelMapper;
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpGet("GetAll")]
-        public async Task<ActionResult<List<GebruikerModelMetRolDto>>> Get()
+        public async Task<ActionResult<List<VolledigeGebruikerModelDto>>> Get()
         {
-            var result = await _userRepository.GetAll();
+            var result = await _gebruikerRepository.GetAll();
             if (result != null)
             {
-                var userModelWithRoleDto = result.Select(_userModelWithRoleMapper.MapToDtoModel);
-                return Ok(userModelWithRoleDto);
+                var volledigeGebruikerModelDto = result.Select(_volledigeGebruikerModelMapper.MapToDtoModel);
+                return Ok(volledigeGebruikerModelDto);
             }
 
             return Ok();
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<GebruikerModelMetRolDto>> Get(int id)
+        public async Task<ActionResult<VolledigeGebruikerModelDto>> Get(int id)
         {
-            var result = await _userRepository.GetById(id);
+            var result = await _gebruikerRepository.GetById(id);
             if (result != null)
             {
-                var userModelWithRoleDto = _userModelWithRoleMapper.MapToDtoModel(result);
-                return Ok(userModelWithRoleDto);
+                var volledigeGebruikerModelDto = _volledigeGebruikerModelMapper.MapToDtoModel(result);
+                return Ok(volledigeGebruikerModelDto);
             }
 
             return Ok();
@@ -57,21 +57,21 @@ namespace WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("Create")]
-        public async Task<IActionResult> Post([FromBody] GebruikerModelDto userModelDto)
+        public async Task<IActionResult> Post([FromBody] CreateGebruikerModelDto createBruikerModelDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var password = AuthenticationHelper.CreatePasswordHash(userModelDto.Password);
-            var user = _userModelMapper.MapToEntityModel(userModelDto);
-            user.PasswordHash = password.PasswordHash;
-            user.PasswordSalt = password.PasswordSalt;            
+            var password = AuthenticationHelper.CreatePasswordHash(createBruikerModelDto.Password);
+            var gebruiker = _createGebruikerModelMapper.MapToEntityModel(createBruikerModelDto);
+            gebruiker.PasswordHash = password.PasswordHash;
+            gebruiker.PasswordSalt = password.PasswordSalt;            
 
             try
             {
-                await _userRepository.Create(user);
+                await _gebruikerRepository.Create(gebruiker);
             }
             catch (HttpRequestException ex)
             {
@@ -82,19 +82,43 @@ namespace WebAPI.Controllers
         }
         
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] GebruikerModelDto userModelDto)
+        public async Task<IActionResult> Put(int id, [FromBody] VolledigeGebruikerModelDto volledigeGebruikerModelDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var password = AuthenticationHelper.CreatePasswordHash(userModelDto.Password);
-            var user = _userModelMapper.MapToEntityModel(userModelDto);
-            user.PasswordHash = password.PasswordHash;
-            user.PasswordSalt = password.PasswordSalt;
+            var gebruiker = _volledigeGebruikerModelMapper.MapToEntityModel(volledigeGebruikerModelDto);
 
-            await _userRepository.Update(id, user);
+            await _gebruikerRepository.Update(id, gebruiker);
+            return Ok();
+        }
+
+        [HttpPut("AddGebruikerToKlas/{id}")]
+        public async Task<IActionResult> AddGebruikerToKlas(int id, [FromBody] VolledigeGebruikerModelDto volledigeGebruikerModelDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var gebruiker = _volledigeGebruikerModelMapper.MapToEntityModel(volledigeGebruikerModelDto);
+
+            await _gebruikerRepository.AddGebruikerToKlas(id, gebruiker);
+            return Ok();
+        }
+
+        [HttpGet("GetGebruikerByEmail/{email}")]
+        public async Task<IActionResult> GetGebruikerByEmail(string email)
+        {
+            var result = await _gebruikerRepository.GetGebruikerByEmail(email);
+            if (result != null)
+            {
+                var volledigeGebruikerModelDto = _volledigeGebruikerModelMapper.MapToDtoModel(result);
+                return Ok(volledigeGebruikerModelDto);
+            }
+
             return Ok();
         }
 
@@ -102,7 +126,7 @@ namespace WebAPI.Controllers
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _userRepository.Delete(id);
+            await _gebruikerRepository.Delete(id);
             return Ok();
         }
     }

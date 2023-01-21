@@ -14,6 +14,6 @@ namespace WebAPI.Entities
         [MaxLength(150)]
         public string Beschrijving { get; set; }
 
-        public Opleiding Opleiding { get; set; }
+        public Opleiding? Opleiding { get; set; }
     }
 }

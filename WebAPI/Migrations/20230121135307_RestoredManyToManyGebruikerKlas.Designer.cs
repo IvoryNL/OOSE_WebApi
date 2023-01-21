@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI;
 
@@ -11,9 +12,11 @@ using WebAPI;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230121135307_RestoredManyToManyGebruikerKlas")]
+    partial class RestoredManyToManyGebruikerKlas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -404,9 +407,11 @@ namespace WebAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<int>("RolId")
@@ -607,6 +612,36 @@ namespace WebAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("LesmateriaalTypes");
+                });
+
+            modelBuilder.Entity("WebAPI.Entities.LesmateriaalVorm", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Bestandstype")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("LesmateriaalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Structuur")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Versie")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LesmateriaalId");
+
+                    b.ToTable("LesmateriaalVormen");
                 });
 
             modelBuilder.Entity("WebAPI.Entities.Onderwijseenheid", b =>
@@ -1281,6 +1316,17 @@ namespace WebAPI.Migrations
                     b.Navigation("Lesmateriaal");
                 });
 
+            modelBuilder.Entity("WebAPI.Entities.LesmateriaalVorm", b =>
+                {
+                    b.HasOne("WebAPI.Entities.Lesmateriaal", "Lesmateriaal")
+                        .WithMany("LesmateriaalVormen")
+                        .HasForeignKey("LesmateriaalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lesmateriaal");
+                });
+
             modelBuilder.Entity("WebAPI.Entities.Onderwijsmodule", b =>
                 {
                     b.HasOne("WebAPI.Entities.Opleiding", "Opleiding")
@@ -1444,6 +1490,8 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Entities.Lesmateriaal", b =>
                 {
                     b.Navigation("LesmateriaalInhoud");
+
+                    b.Navigation("LesmateriaalVormen");
                 });
 
             modelBuilder.Entity("WebAPI.Entities.Onderwijseenheid", b =>

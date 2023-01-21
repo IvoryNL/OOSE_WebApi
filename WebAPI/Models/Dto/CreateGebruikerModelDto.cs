@@ -2,7 +2,7 @@
 
 namespace WebAPI.Models.Dto
 {
-    public class GebruikerModelDto : BaseGebruikerModelDto
+    public class CreateGebruikerModelDto : BaseGebruikerModelDto
     {
         [Required]
         public string Password { get; set; }

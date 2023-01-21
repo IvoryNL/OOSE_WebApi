@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using WebAPI.Entities;
 
 namespace WebAPI.Models.Dto
 {
@@ -21,5 +22,8 @@ namespace WebAPI.Models.Dto
 
         [Required]
         public int RolId { get; set; }
+
+        public Rol? Rol { get; set; }
+
     }
 }

@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _userRepository.GetUserByEmail(loginDto.Email);
+            var user = await _userRepository.GetGebruikerByEmail(loginDto.Email);
             if (user == null)
             {
                 var message = "Het opgegeven e-mailadres bestaat niet.";

@@ -25,7 +25,5 @@ namespace WebAPI.Entities
         public List<Les> Lessen { get; set; }
 
         public List<LesmateriaalInhoud> LesmateriaalInhoud { get; set; }
-
-        public List<LesmateriaalVorm> LesmateriaalVormen { get; set; }
     }
 }

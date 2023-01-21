@@ -23,7 +23,6 @@ namespace WebAPI
         public DbSet<Lesmateriaal> Lesmaterialen { get; set; }
         public DbSet<LesmateriaalInhoud> LesmateriaalInhoud { get; set; }
         public DbSet<LesmateriaalType> LesmateriaalTypes { get; set; }
-        public DbSet<LesmateriaalVorm> LesmateriaalVormen { get; set; }
         public DbSet<Onderwijseenheid> Onderwijseenheden { get; set; }
         public DbSet<Onderwijsmodule> Onderwijsmodules { get; set; }
         public DbSet<Onderwijsuitvoering> Onderwijsuitvoeringen { get; set; }
@@ -173,6 +172,22 @@ namespace WebAPI
                     .UsingEntity(eb => eb.ToTable("Klas_Onderwijsuitvoering"));
             });
 
+            //modelBuilder.Entity<Klas_Gebruiker>(klas_gebruiker =>
+            //{
+            //    klas_gebruiker
+            //        .HasKey(k => new { k.GebruikerId, k.KlasId });
+
+            //    klas_gebruiker
+            //        .HasOne(kg => kg.Gebruiker)
+            //        .WithMany(kg => kg.Klas_Gebruiker)
+            //        .HasForeignKey(kg => kg.GebruikerId);
+
+            //    klas_gebruiker
+            //        .HasOne(kg => kg.Klas)
+            //        .WithMany(kg => kg.Klas_Gebruiker)
+            //        .HasForeignKey(kg => kg.KlasId);
+            //});
+
             modelBuilder.Entity<Leerdoel>(leerdoel =>
             {
                 leerdoel
@@ -240,14 +255,6 @@ namespace WebAPI
                 lesmateriaalType
                     .HasIndex(l => l.Naam)
                     .IsUnique();
-            });
-
-            modelBuilder.Entity<LesmateriaalVorm>(lesmateriaalVorm =>
-            {
-                lesmateriaalVorm
-                    .HasOne(l => l.Lesmateriaal)
-                    .WithMany(l => l.LesmateriaalVormen)
-                    .HasForeignKey(l => l.LesmateriaalId);
             });
 
             modelBuilder.Entity<Onderwijseenheid>(onderwijseenheid =>

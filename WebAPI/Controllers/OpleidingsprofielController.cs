@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Constants;
 using WebAPI.Entities;
-using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -12,9 +11,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class OpleidingsprofielController : ControllerBase
     {
-        private readonly IRepository<Opleidingsprofiel> _opleidingsprofielRepository;
+        private readonly IOpleidingsprofielRepository<Opleidingsprofiel> _opleidingsprofielRepository;
 
-        public OpleidingsprofielController(IRepository<Opleidingsprofiel> opleidingsprofielRepository)
+        public OpleidingsprofielController(IOpleidingsprofielRepository<Opleidingsprofiel> opleidingsprofielRepository)
         {
             _opleidingsprofielRepository = opleidingsprofielRepository;
         }
@@ -81,6 +80,13 @@ namespace WebAPI.Controllers
         {
             await _opleidingsprofielRepository.Delete(id);
             return Ok();
+        }
+
+        [HttpGet("GetAllOpleidingsprofielenByOpleidingId/{opleidingId}")]
+        public async Task<ActionResult<List<Opleidingsprofiel>>> GetAllOpleidingsprofielenByOpleidingId(int opleidingId)
+        {
+            var result = await _opleidingsprofielRepository.GetAllOpleidingsprofielenByOpleidingId(opleidingId);
+            return Ok(result);
         }
     }
 }

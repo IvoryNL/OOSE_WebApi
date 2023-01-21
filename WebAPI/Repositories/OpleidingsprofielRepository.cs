@@ -4,7 +4,7 @@ using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class OpleidingsprofielRepository : IRepository<Opleidingsprofiel>
+    public class OpleidingsprofielRepository : IOpleidingsprofielRepository<Opleidingsprofiel>
     {
         private readonly DataContext _dataContext;
 
@@ -42,6 +42,13 @@ namespace WebAPI.Repositories
         {
             return await _dataContext.Opleidingsprofielen
                 .Include(o => o.Opleiding)
+                .ToListAsync();
+        }
+
+        public async Task<List<Opleidingsprofiel>> GetAllOpleidingsprofielenByOpleidingId(int opleidingId)
+        {
+            return await _dataContext.Opleidingsprofielen
+                .Where(o => o.OpleidingId == opleidingId)
                 .ToListAsync();
         }
 
