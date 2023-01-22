@@ -10,10 +10,10 @@
 
         public int Weeknummer { get; set; }
 
-        public Onderwijsuitvoering Onderwijsuitvoering { get; set; }
+        public Onderwijsuitvoering? Onderwijsuitvoering { get; set; }
 
-        public List<Tentamen> Tentamens { get; set; }
+        public List<Tentamen>? Tentamens { get; set; }
 
-        public List<Les> Lessen { get; set; }
+        public List<Les>? Lessen { get; set; }
     }
 }

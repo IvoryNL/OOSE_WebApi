@@ -11,8 +11,8 @@ namespace WebAPI.Entities
         [MaxLength(150)]
         public string Beschrijving { get; set; }
 
-        public Onderwijseenheid Onderwijseenheid { get; set; }
+        public Onderwijseenheid? Onderwijseenheid { get; set; }
 
-        public List<Leeruitkomst> Leeruitkomsten { get; set; }
+        public List<Leeruitkomst>? Leeruitkomsten { get; set; }
     }
 }

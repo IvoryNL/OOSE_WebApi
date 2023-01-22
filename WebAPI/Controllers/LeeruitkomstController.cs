@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Constants;
 using WebAPI.Entities;
-using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -12,10 +11,11 @@ namespace WebAPI.Controllers
     [Authorize]
     public class LeeruitkomstController : ControllerBase
     {
-        private readonly IRepository<Leeruitkomst> _leeruitkomstRepository;
+        private readonly ILeeruitkomstRepository<Leeruitkomst> _leeruitkomstRepository;
         private readonly IOnderwijsmoduleRepository<Onderwijsmodule> _onderwijsmoduleRepository;
 
-        public LeeruitkomstController(IRepository<Leeruitkomst> leeruitkomstRepository, IOnderwijsmoduleRepository<Onderwijsmodule> onderwijsmoduleRepository)
+        public LeeruitkomstController(ILeeruitkomstRepository<Leeruitkomst> leeruitkomstRepository, 
+            IOnderwijsmoduleRepository<Onderwijsmodule> onderwijsmoduleRepository)
         {
             _leeruitkomstRepository = leeruitkomstRepository;
             _onderwijsmoduleRepository = onderwijsmoduleRepository;
@@ -25,6 +25,13 @@ namespace WebAPI.Controllers
         public async Task<ActionResult<List<Leeruitkomst>>> Get()
         {
             var result = await _leeruitkomstRepository.GetAll();
+            return Ok(result);
+        }
+
+        [HttpGet("GetLeeruitkomstenByOpleidingId/{id}")]
+        public async Task<ActionResult<List<Leeruitkomst>>> GetLeeruitkomstenByOpleidingId(int id)
+        {
+            var result = await _leeruitkomstRepository.GetLeeruitkomstenByOpleidingId(id);
             return Ok(result);
         }
 

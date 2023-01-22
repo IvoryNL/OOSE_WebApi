@@ -4,7 +4,7 @@ using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class LeeruitkomstRepository : IRepository<Leeruitkomst>
+    public class LeeruitkomstRepository : ILeeruitkomstRepository<Leeruitkomst>
     {
         private readonly DataContext _dataContext;
 
@@ -55,6 +55,15 @@ namespace WebAPI.Repositories
                 .Include(l => l.Beoordelingscriterium)
                 .Include(l => l.Tentamens)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Leeruitkomst>> GetLeeruitkomstenByOpleidingId(int id)
+        {
+            return await _dataContext.Leeruitkomsten
+                .Include(l => l.Leerdoel)
+                .ThenInclude(l => l.Onderwijseenheid)
+                .ThenInclude(o => o.Onderwijsmodules.Where(o => o.OpleidingId == id))
+                .Select(l => l) .ToListAsync();
         }
 
         public async Task Update(int id, Leeruitkomst entity)

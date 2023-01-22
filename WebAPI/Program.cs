@@ -60,8 +60,8 @@ builder.Services.AddScoped<IRepository<Beoordelingsonderdeel>, Beoordelingsonder
 builder.Services.AddScoped<IGebruikerRepository<Gebruiker>, GebruikerRepository>();
 builder.Services.AddScoped<IKlasRepository<Klas>, KlasRepository>();
 builder.Services.AddScoped<IRepository<Leerdoel>, LeerdoelRepository>();
-builder.Services.AddScoped<IRepository<Leeruitkomst>, LeeruitkomstRepository>();
-builder.Services.AddScoped<IRepository<Les>, LesRepository>();
+builder.Services.AddScoped<ILeeruitkomstRepository<Leeruitkomst>, LeeruitkomstRepository>();
+builder.Services.AddScoped<ILesRepository<Les>, LesRepository>();
 builder.Services.AddScoped<IRepository<Lesmateriaal>, LesmateriaalRepository>();
 builder.Services.AddScoped<IRepository<LesmateriaalInhoud>, LesmateriaalInhoudRepository>();
 builder.Services.AddScoped<IRepository<LesmateriaalType>, LesmateriaalTypeRepository>();

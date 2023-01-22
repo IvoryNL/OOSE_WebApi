@@ -14,12 +14,12 @@ namespace WebAPI.Entities
         [MaxLength(150)]
         public string Beschrijving { get; set; }
 
-        public Leerdoel Leerdoel { get; set; }
+        public Leerdoel? Leerdoel { get; set; }
 
-        public List<Beoordelingscriteria> Beoordelingscriterium { get; set; }
+        public List<Beoordelingscriteria>? Beoordelingscriterium { get; set; }
 
-        public List<Tentamen> Tentamens { get; set; }
+        public List<Tentamen>? Tentamens { get; set; }
 
-        public List<Les> Lessen { get; set; }
+        public List<Les>? Lessen { get; set; }
     }
 }

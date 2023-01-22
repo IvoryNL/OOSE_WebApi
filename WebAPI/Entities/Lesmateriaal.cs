@@ -18,12 +18,12 @@ namespace WebAPI.Entities
 
         public bool Verplicht { get; set; }
 
-        public Auteur Auteur { get; set; }
+        public Auteur? Auteur { get; set; }
 
-        public LesmateriaalType LesmateriaalType { get; set; }
+        public LesmateriaalType? LesmateriaalType { get; set; }
 
-        public List<Les> Lessen { get; set; }
+        public List<Les>? Lessen { get; set; }
 
-        public List<LesmateriaalInhoud> LesmateriaalInhoud { get; set; }
+        public List<LesmateriaalInhoud>? LesmateriaalInhoud { get; set; }
     }
 }

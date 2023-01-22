@@ -12,12 +12,12 @@
 
         public int Periode { get; set; }        
 
-        public Onderwijsmodule Onderwijsmodule { get; set; }
+        public Onderwijsmodule? Onderwijsmodule { get; set; }
 
-        public Gebruiker Docent { get; set; }
+        public Gebruiker? Docent { get; set; }
 
-        public List<Klas> Klassen { get; set; }
+        public List<Klas>? Klassen { get; set; }
 
-        public List<Planning> Planningen { get; set; }
+        public List<Planning>? Planningen { get; set; }
     }
 }

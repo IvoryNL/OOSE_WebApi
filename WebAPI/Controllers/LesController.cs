@@ -11,9 +11,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class LesController : ControllerBase
     {
-        private readonly IRepository<Les> _lesRepository;
+        private readonly ILesRepository<Les> _lesRepository;
 
-        public LesController(IRepository<Les> lesRepository)
+        public LesController(ILesRepository<Les> lesRepository)
         {
             _lesRepository = lesRepository;
         }
@@ -55,6 +55,70 @@ namespace WebAPI.Controllers
             }
 
             await _lesRepository.Update(id, les);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpPut("AddLesmateriaalToLes/{id}")]
+        public async Task<IActionResult> AddLesmateriaalToLes(int id, [FromBody] Les les)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _lesRepository.AddLesmateriaalToLes(id, les);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpDelete("RemoveLesmateriaalFromLes/{id}/{lesmateriaalId}")]
+        public async Task<IActionResult> RemoveLesmateriaalFromLes(int id, int lesmateriaalId)
+        {
+            await _lesRepository.RemoveLesmateriaalFromLes(id, lesmateriaalId);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpPut("AddLeeruitkomstToLes/{id}")]
+        public async Task<IActionResult> AddLeeruitkomstToLes(int id, [FromBody] Les les)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _lesRepository.AddLeeruitkomstToLes(id, les);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpDelete("RemoveLeeruitkomstFromLes/{id}/{lesmateriaalId}")]
+        public async Task<IActionResult> RemoveLeeruitkomstFromLes(int id, int lesmateriaalId)
+        {
+            await _lesRepository.RemoveLeeruitkomstFromLes(id, lesmateriaalId);
+            return Ok();
+        }
+        
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpPut("AddLesToPlanning/{id}")]
+        public async Task<IActionResult> AddLesToPlanning(int id, [FromBody] Les les)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _lesRepository.AddLesToPlanning(id, les);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpDelete("RemoveLesFromPlanning/{id}/{lesmateriaalId}")]
+        public async Task<IActionResult> RemoveLesFromPlanning(int id, int lesmateriaalId)
+        {
+            await _lesRepository.RemoveLesFromPlanning(id, lesmateriaalId);
             return Ok();
         }
 

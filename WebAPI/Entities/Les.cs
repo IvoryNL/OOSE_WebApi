@@ -9,10 +9,10 @@ namespace WebAPI.Entities
         [MaxLength(150)]
         public string Omschrijving { get; set; }
 
-        public List<Planning> Planningen { get; set; }
+        public List<Planning>? Planningen { get; set; }
 
-        public List<Leeruitkomst> Leeruitkomsten { get; set; }
+        public List<Leeruitkomst>? Leeruitkomsten { get; set; }
 
-        public List<Lesmateriaal> Lesmaterialen { get; set; }
+        public List<Lesmateriaal>? Lesmaterialen { get; set; }
     }
 }

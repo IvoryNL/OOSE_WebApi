@@ -56,8 +56,7 @@ namespace WebAPI.Repositories
         public async Task<List<Klas>> GetKlassenByOpleidingId(int opleidingId)
         {
             return await _dataContext.Klassen
-                .Include(k => k.Onderwijsuitvoeringen
-                .Where(o => o.Onderwijsmodule.OpleidingId == opleidingId))
+                .Include(k => k.Onderwijsuitvoeringen.Where(o => o.Onderwijsmodule.OpleidingId == opleidingId))
                 .Select(k => k)
                 .ToListAsync();
         }
