@@ -43,7 +43,7 @@ namespace WebAPI.Controllers
                 PasswordHash= user.PasswordHash,
                 PasswordSalt= user.PasswordSalt
             };
-            if (!AuthenticationHelper.VerifyPasswordHash(loginDto.Password, hashedPassword))
+            if (!AuthenticationHelper.VerifyPasswordHash(loginDto.Wachtwoord, hashedPassword))
             {
                 var message = "Het wachtwoord is onjuist";
                 return new ConflictObjectResult(message);

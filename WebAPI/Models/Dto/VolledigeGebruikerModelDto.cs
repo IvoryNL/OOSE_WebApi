@@ -17,5 +17,7 @@ namespace WebAPI.Models.Dto
         public List<TentamenVanStudent>? TentamensVanStudent { get; set; }
 
         public List<Beoordelingsmodel>? Beoordelingsmodellen { get; set; }
+
+        public List<Toetsinschrijving>? Toetsinschrijvingen { get; set; }
     }
 }

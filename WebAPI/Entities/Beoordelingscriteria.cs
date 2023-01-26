@@ -8,7 +8,7 @@ namespace WebAPI.Entities
 
         public int BeoordelingsonderdeelId { get; set; }
 
-        public int LeeruitkomstId { get; set; }
+        public int? LeeruitkomstId { get; set; }
 
         [MaxLength(100)]
         public string Criteria { get; set; }
@@ -24,10 +24,10 @@ namespace WebAPI.Entities
 
         public bool Verplicht { get; set; }
 
-        public Beoordelingsonderdeel Beoordelingsonderdeel { get; set; }
+        public Beoordelingsonderdeel? Beoordelingsonderdeel { get; set; }
 
-        public Leeruitkomst Leeruitkomst { get; set; }
+        public Leeruitkomst? Leeruitkomst { get; set; }
 
-        public List<Beoordelingsdimensie> Beoordelingsdimensies { get; set; }
+        public List<Beoordelingsdimensie>? Beoordelingsdimensies { get; set; }
     }
 }

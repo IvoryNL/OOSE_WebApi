@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WebAPI.Entities;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class TentamenRepository : IRepository<Tentamen>
+    public class TentamenRepository : ITentamenRepository<Tentamen>
     {
         private readonly DataContext _dataContext;
 
@@ -44,6 +45,7 @@ namespace WebAPI.Repositories
                 .Include(t => t.Vorm)
                 .Include(t => t.Beoordelingsmodel)
                 .Include(t => t.Leeruitkomsten)
+                .Include(t => t.Planningen)
                 .ToListAsync();
         }
 
@@ -54,6 +56,7 @@ namespace WebAPI.Repositories
                 .Include(t => t.Vorm)
                 .Include(t => t.Beoordelingsmodel)
                 .Include(t => t.Leeruitkomsten)
+                .Include(t => t.Planningen)
                 .FirstOrDefaultAsync();
         }
 
@@ -72,6 +75,81 @@ namespace WebAPI.Repositories
                 tentamen.Naam = entity.Naam;
 
                 _dataContext.Tentamens.Update(tentamen);
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Tentamen>> GetAllTentamensVanOnderwijsuitvoeringStudent(int id)
+        {
+            var student = await _dataContext.Gebruikers
+                .Where(g => g.Id == id)
+                .Include(g => g.Klassen)
+                .ThenInclude(k => k.Onderwijsuitvoeringen)
+                .FirstOrDefaultAsync();
+            var onderwijsuitvoeringen = student.Klassen
+                .SelectMany(k => k.Onderwijsuitvoeringen);
+            var huidigeOnderwijsuitvoering = onderwijsuitvoeringen
+                .OrderByDescending(o => o.Jaartal)
+                .ThenByDescending(o => o.Periode)
+                .FirstOrDefault();
+
+            return await _dataContext.Planningen
+                .Where(p => p.OnderwijsuitvoeringId == huidigeOnderwijsuitvoering.Id && p.Tentamens.Any())
+                .Include(p => p.Tentamens)
+                .Select(p => new Tentamen 
+                { 
+                    Id = p.Tentamens.FirstOrDefault().Id,
+                    Naam = p.Tentamens.FirstOrDefault().Naam,
+                    Planningen = new List<Planning> { p }
+                })
+                .ToListAsync();
+        }
+
+        public async Task OntkoppelLeeruitkomstVanTentamen(int id, int leeruitkomstId)
+        {
+            var tentamen = await _dataContext.Tentamens.Where(t => t.Id == id).Include(t => t.Leeruitkomsten).FirstOrDefaultAsync();
+            var leeruitkomst = await _dataContext.Leeruitkomsten.Where(l => l.Id == leeruitkomstId).FirstOrDefaultAsync();
+            if (tentamen != null && leeruitkomst != null)
+            {
+                tentamen.Leeruitkomsten!.Remove(leeruitkomst);
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task VerwijderPlanningVanTentamen(int id, int planningId)
+        {
+            var tentamen = await _dataContext.Tentamens.Where(t => t.Id == id).Include(t => t.Planningen).FirstOrDefaultAsync();
+            var planning = await _dataContext.Planningen.Where(l => l.Id == planningId).FirstOrDefaultAsync();
+            if (tentamen != null && planning != null)
+            {
+                var toetsInschrijvingen = await _dataContext.Toetsinschrijvingen.Where(t => t.PlanningId == planning.Id).ToListAsync();
+                tentamen.Planningen!.Remove(planning);
+                _dataContext.Toetsinschrijvingen.RemoveRange(toetsInschrijvingen);
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task KoppelLeeruitkomstAanTentamen(int id, Tentamen entity)
+        {
+            var tentamen = await _dataContext.Tentamens.Where(t => t.Id == id).Include(t => t.Leeruitkomsten).FirstOrDefaultAsync();
+            if (tentamen != null && entity != null)
+            {
+                var leeruitkomstenIds = entity.Leeruitkomsten!.Select(l => l.Id).ToList();
+                var leeruitkomsten = await _dataContext.Leeruitkomsten.Where(l => leeruitkomstenIds.Contains(l.Id)).ToListAsync();
+                tentamen.Leeruitkomsten!.Clear();
+                tentamen.Leeruitkomsten.AddRange(leeruitkomsten);
+
+                await _dataContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task InplannenTentamen(int id, Tentamen entity)
+        {
+            var tentamen = await _dataContext.Tentamens.Where(t => t.Id == id).Include(l => l.Planningen).FirstOrDefaultAsync();
+            if (tentamen != null && entity != null)
+            {
+                tentamen.Planningen!.Add(entity.Planningen!.FirstOrDefault());
+
                 await _dataContext.SaveChangesAsync();
             }
         }

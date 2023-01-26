@@ -17,10 +17,10 @@ namespace WebAPI.Entities
 
         public decimal Studiepunten { get; set; }
 
-        public List<Onderwijsmodule> Onderwijsmodules { get; set; }
+        public List<Onderwijsmodule>? Onderwijsmodules { get; set; }
 
-        public List<Tentamen> Tentamens { get; set; }
+        public List<Tentamen>? Tentamens { get; set; }
 
-        public List<Leerdoel> Leerdoelen { get; set; }
+        public List<Leerdoel>? Leerdoelen { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace WebAPI.Entities
 
         public bool Verplicht { get; set; }
 
-        public Beoordelingsmodel Beoordelingsmodel { get; set; }
+        public Beoordelingsmodel? Beoordelingsmodel { get; set; }
 
-        public List<Beoordelingscriteria> Beoordelingscriterium { get; set; }
+        public List<Beoordelingscriteria>? Beoordelingscriterium { get; set; }
     }
 }

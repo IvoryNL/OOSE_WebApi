@@ -73,7 +73,7 @@ builder.Services.AddScoped<IOpleidingsprofielRepository<Opleidingsprofiel>, Ople
 builder.Services.AddScoped<IRepository<Planning>, PlanningRepository>();
 builder.Services.AddScoped<IRepository<Rol>, RolRepository>();
 builder.Services.AddScoped<IRepository<Status>, StatusRepository>();
-builder.Services.AddScoped<IRepository<Tentamen>, TentamenRepository>();
+builder.Services.AddScoped<ITentamenRepository<Tentamen>, TentamenRepository>();
 builder.Services.AddScoped<IRepository<TentamenVanStudent>, TentamensVanStudentRepository>();
 builder.Services.AddScoped<IRepository<Toetsinschrijving>, ToetsinschrijvingRepository>();
 builder.Services.AddScoped<IRepository<Vorm>, VormRepository>();

@@ -6,6 +6,6 @@ namespace WebAPI.Repositories.Interfaces
     {
         Task<T?> GetGebruikerByEmail(string email);
 
-        Task AddGebruikerToKlas(int id, T entity);
+        Task KoppelStudentAanKlas(int id, T entity);
     }
 }

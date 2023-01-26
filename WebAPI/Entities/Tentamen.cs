@@ -11,12 +11,12 @@ namespace WebAPI.Entities
         [MaxLength(50)]
         public string Naam { get; set; }
 
-        public Vorm Vorm { get; set; }
+        public Vorm? Vorm { get; set; }
 
-        public List<Planning> Planningen { get; set; }
+        public List<Planning>? Planningen { get; set; }
 
-        public Beoordelingsmodel Beoordelingsmodel { get; set; }
+        public Beoordelingsmodel? Beoordelingsmodel { get; set; }
 
-        public List<Leeruitkomst> Leeruitkomsten { get; set; }
+        public List<Leeruitkomst>? Leeruitkomsten { get; set; }
     }
 }

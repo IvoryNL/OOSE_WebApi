@@ -19,6 +19,6 @@ namespace WebAPI.Entities
 
         public decimal Cijferwaarde { get; set; }
 
-        public Beoordelingscriteria Beoordelingscriteria { get; set; }
+        public Beoordelingscriteria? Beoordelingscriteria { get; set; }
     }
 }

@@ -43,6 +43,7 @@ namespace WebAPI.Repositories
             return await _dataContext.Lesmaterialen
                 .Include(l => l.Auteur)
                 .Include(l => l.LesmateriaalType)
+                .Include(l => l.LesmateriaalInhoud)
                 .ToListAsync();
         }
 
@@ -52,6 +53,7 @@ namespace WebAPI.Repositories
                 .Where(l => l.Id == id)
                 .Include(l => l.Auteur)
                 .Include(l => l.LesmateriaalType)
+                .Include(l => l.LesmateriaalInhoud)
                 .FirstOrDefaultAsync();
         }
 

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Constants;
 using WebAPI.Entities;
-using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -12,9 +11,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class OnderwijsmoduleController : ControllerBase
     {
-        private readonly IRepository<Onderwijsmodule> _onderwijsmoduleRepository;
+        private readonly IOnderwijsmoduleRepository<Onderwijsmodule> _onderwijsmoduleRepository;
 
-        public OnderwijsmoduleController(IRepository<Onderwijsmodule> onderwijsmoduleRepository)
+        public OnderwijsmoduleController(IOnderwijsmoduleRepository<Onderwijsmodule> onderwijsmoduleRepository)
         {
             _onderwijsmoduleRepository = onderwijsmoduleRepository;
         }
@@ -33,7 +32,6 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPost("Create")]
         public async Task<IActionResult> Post([FromBody] Onderwijsmodule onderwijsmodule)
         {
@@ -50,11 +48,10 @@ namespace WebAPI.Controllers
             {
                 return new ConflictObjectResult(ex.Message);
             }
-            
+
             return Ok();
         }
 
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Onderwijsmodule onderwijsmodule)
         {
@@ -69,17 +66,51 @@ namespace WebAPI.Controllers
             }
             catch (HttpRequestException ex)
             {
-                return new ConflictObjectResult(ex.Message);
+                var message = "Er bestaat al een onderwijsmodule met deze naam";
+                return new ConflictObjectResult(message);
             }
-            
+
             return Ok();
         }
 
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _onderwijsmoduleRepository.Delete(id);
+            return Ok();
+        }
+
+        [HttpGet("GetAllOnderwijsmodulesViaOpleidingId/{opleidingId}")]
+        public async Task<ActionResult<List<Onderwijsmodule>>> GetAllOnderwijsmodulesViaOpleidingId(int opleidingId)
+        {
+            var result = await _onderwijsmoduleRepository.GetAllOnderwijsmodulesViaOpleidingId(opleidingId);
+            return Ok(result);
+        }
+
+        [HttpGet("GetOnderwijsmoduleVoorExportById/{id}")]
+        public async Task<ActionResult<Onderwijsmodule>> GetOnderwijsmoduleVoorExportById(int id)
+        {
+            var result = await _onderwijsmoduleRepository.GetOnderwijsmoduleVoorExportById(id);
+            return Ok(result);
+        }
+
+        [HttpPut("VoegOnderwijseenheidToe/{id}")]
+        public async Task<IActionResult> VoegOnderwijseenheidToe(int id, [FromBody] Onderwijseenheid onderwijseenheid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                await _onderwijsmoduleRepository.VoegOnderwijseenheidToe(id, onderwijseenheid);
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ConflictObjectResult(ex.Message);
+            }
+
             return Ok();
         }
     }

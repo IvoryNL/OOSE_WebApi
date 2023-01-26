@@ -75,7 +75,6 @@ namespace WebAPI.Controllers
             try
             {
                 await _leeruitkomstRepository.Update(id, leeruitkomst);
-                await IncreaseVersion(leeruitkomst.Leerdoel);
             }
             catch (HttpRequestException ex)
             {

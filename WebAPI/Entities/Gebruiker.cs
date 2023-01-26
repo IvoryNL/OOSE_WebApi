@@ -38,8 +38,6 @@ namespace WebAPI.Entities
 
         public List<Klas>? Klassen { get; set; }
 
-        //public List<Klas_Gebruiker?> Klas_Gebruiker { get; set; }
-
         public List<TentamenVanStudent>? TentamensVanStudent { get; set; }
 
         public List<Beoordeling>? DocentBeoordelingen { get; set; }
@@ -47,5 +45,7 @@ namespace WebAPI.Entities
         public List<Beoordelingsmodel>? Beoordelingsmodellen { get; set; }
 
         public List<Onderwijsuitvoering>? Onderwijsuitvoeringen { get; set; }
+
+        public List<Toetsinschrijving>? Toetsinschrijvingen { get; set; }
     }
 }

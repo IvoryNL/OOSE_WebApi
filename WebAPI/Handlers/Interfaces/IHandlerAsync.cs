@@ -2,6 +2,8 @@
 {
     public interface IHandlerAsync<T>
     {
-        Task<T> GetAsync(int id);
+        Task<T> ConsistentieCheckTentamenPlanningHandlerAsync(int id);
+
+        Task<T> ConsistentieCheckCoverageHandlerAsync(int id);
     }
 }

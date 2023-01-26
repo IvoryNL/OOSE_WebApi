@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Constants;
 using WebAPI.Entities;
-using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -12,9 +11,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class TentamenController : ControllerBase
     {
-        private readonly IRepository<Tentamen> _tentamenRepository;
+        private readonly ITentamenRepository<Tentamen> _tentamenRepository;
 
-        public TentamenController(IRepository<Tentamen> tentamenRepository)
+        public TentamenController(ITentamenRepository<Tentamen> tentamenRepository)
         {
             _tentamenRepository = tentamenRepository;
         }
@@ -25,13 +24,13 @@ namespace WebAPI.Controllers
             var result = await _tentamenRepository.GetAll();
             return Ok(result);
         }
-
+        
         [HttpGet("GetById/{id}")]
         public async Task<ActionResult<Tentamen>> Get(int id)
         {
             var result = await _tentamenRepository.GetById(id);
             return Ok(result);
-        }
+        }           
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPost("Create")]
@@ -80,6 +79,55 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _tentamenRepository.Delete(id);
+            return Ok();
+        }
+
+        [HttpGet("GetAllTentamensVanOnderwijsuitvoeringStudent/{id}")]
+        public async Task<ActionResult<List<Tentamen>>> GetAllTentamensVanOnderwijsuitvoeringStudent(int id)
+        {
+            var result = await _tentamenRepository.GetAllTentamensVanOnderwijsuitvoeringStudent(id);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpPut("InplannenTentamen/{id}")]
+        public async Task<IActionResult> InplannenTentamen(int id, [FromBody] Tentamen tentamen)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _tentamenRepository.InplannenTentamen(id, tentamen);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpDelete("VerwijderPlanningVanTentamen/{id}/{planningId}")]
+        public async Task<IActionResult> VerwijderPlanningVanTentamen(int id, int planningId)
+        {
+            await _tentamenRepository.VerwijderPlanningVanTentamen(id, planningId);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpPut("KoppelLeeruitkomstAanTentamen/{id}")]
+        public async Task<IActionResult> KoppelLeeruitkomstAanTentamen(int id, [FromBody] Tentamen tentamen)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _tentamenRepository.KoppelLeeruitkomstAanTentamen(id, tentamen);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpDelete("OntkoppelLeeruitkomstVanTentamen/{id}/{leeruitkomstId}")]
+        public async Task<IActionResult> OntkoppelLeeruitkomstVanTentamen(int id, int leeruitkomstId)
+        {
+            await _tentamenRepository.OntkoppelLeeruitkomstVanTentamen(id, leeruitkomstId);
             return Ok();
         }
     }

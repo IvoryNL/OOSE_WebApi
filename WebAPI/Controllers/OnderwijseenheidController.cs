@@ -47,7 +47,6 @@ namespace WebAPI.Controllers
             try
             {
                 await _onderwijseenheidRepository.Create(onderwijseenheid);
-                await IncreaseVersion(onderwijseenheid.Onderwijsmodules);
             }
             catch (HttpRequestException ex)
             {
@@ -69,7 +68,6 @@ namespace WebAPI.Controllers
             try
             {
                 await _onderwijseenheidRepository.Update(id, onderwijseenheid);
-                await IncreaseVersion(onderwijseenheid.Onderwijsmodules);
             }
             catch (HttpRequestException ex)
             {

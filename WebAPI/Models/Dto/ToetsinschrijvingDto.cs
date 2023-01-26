@@ -1,6 +1,8 @@
-﻿namespace WebAPI.Entities
+﻿using WebAPI.Entities;
+
+namespace WebAPI.Models.Dto
 {
-    public class Toetsinschrijving
+    public class ToetsinschrijvingDto
     {
         public int Id { get; set; }
 
@@ -10,7 +12,7 @@
 
         public int PlanningId { get; set; }
 
-        public Gebruiker? Student { get; set; }
+        public VolledigeGebruikerModelDto? Student { get; set; }
 
         public Tentamen? Tentamen { get; set; }
 

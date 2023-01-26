@@ -59,74 +59,74 @@ namespace WebAPI.Controllers
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpPut("AddLesmateriaalToLes/{id}")]
-        public async Task<IActionResult> AddLesmateriaalToLes(int id, [FromBody] Les les)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _lesRepository.Delete(id);
+            return Ok();
+        }
+
+        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
+        [HttpPut("KoppelLesmateriaalAanLes/{id}")]
+        public async Task<IActionResult> KoppelLesmateriaalAanLes(int id, [FromBody] Les les)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _lesRepository.AddLesmateriaalToLes(id, les);
+            await _lesRepository.KoppelLesmateriaalAanLes(id, les);
             return Ok();
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpDelete("RemoveLesmateriaalFromLes/{id}/{lesmateriaalId}")]
-        public async Task<IActionResult> RemoveLesmateriaalFromLes(int id, int lesmateriaalId)
+        [HttpDelete("OntkoppelLesmateriaalVanLes/{id}/{lesmateriaalId}")]
+        public async Task<IActionResult> OntkoppelLesmateriaalVanLes(int id, int lesmateriaalId)
         {
-            await _lesRepository.RemoveLesmateriaalFromLes(id, lesmateriaalId);
+            await _lesRepository.OntkoppelLesmateriaalVanLes(id, lesmateriaalId);
             return Ok();
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpPut("AddLeeruitkomstToLes/{id}")]
-        public async Task<IActionResult> AddLeeruitkomstToLes(int id, [FromBody] Les les)
+        [HttpPut("KoppelLeeruitkomstAanLes/{id}")]
+        public async Task<IActionResult> KoppelLeeruitkomstAanLes(int id, [FromBody] Les les)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _lesRepository.AddLeeruitkomstToLes(id, les);
+            await _lesRepository.KoppelLeeruitkomstAanLes(id, les);
             return Ok();
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpDelete("RemoveLeeruitkomstFromLes/{id}/{lesmateriaalId}")]
-        public async Task<IActionResult> RemoveLeeruitkomstFromLes(int id, int lesmateriaalId)
+        [HttpDelete("OntkoppelLeeruitkomstVanLes/{id}/{lesmateriaalId}")]
+        public async Task<IActionResult> OntkoppelLeeruitkomstVanLes(int id, int lesmateriaalId)
         {
-            await _lesRepository.RemoveLeeruitkomstFromLes(id, lesmateriaalId);
+            await _lesRepository.OntkoppelLeeruitkomstVanLes(id, lesmateriaalId);
             return Ok();
         }
         
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpPut("AddLesToPlanning/{id}")]
-        public async Task<IActionResult> AddLesToPlanning(int id, [FromBody] Les les)
+        [HttpPut("InplannenLes/{id}")]
+        public async Task<IActionResult> InplannenLes(int id, [FromBody] Les les)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _lesRepository.AddLesToPlanning(id, les);
+            await _lesRepository.InplannenLes(id, les);
             return Ok();
         }
 
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpDelete("RemoveLesFromPlanning/{id}/{lesmateriaalId}")]
-        public async Task<IActionResult> RemoveLesFromPlanning(int id, int lesmateriaalId)
+        [HttpDelete("VerwijderPlanningVanLes/{id}/{planningId}")]
+        public async Task<IActionResult> VerwijderPlanningVanLes(int id, int planningId)
         {
-            await _lesRepository.RemoveLesFromPlanning(id, lesmateriaalId);
-            return Ok();
-        }
-
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
-        [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await _lesRepository.Delete(id);
+            await _lesRepository.VerwijderPlanningVanLes(id, planningId);
             return Ok();
         }
     }

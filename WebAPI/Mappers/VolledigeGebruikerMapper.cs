@@ -23,6 +23,7 @@ namespace WebAPI.Mappers
             volledigeGebruikerModelDto.Klassen = entityModel.Klassen;
             volledigeGebruikerModelDto.Opleiding = entityModel.Opleiding;
             volledigeGebruikerModelDto.Opleidingsprofiel = entityModel.Opleidingsprofiel;
+            volledigeGebruikerModelDto.Toetsinschrijvingen = entityModel.Toetsinschrijvingen;
 
             return volledigeGebruikerModelDto;
         }

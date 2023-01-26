@@ -12,12 +12,16 @@ namespace WebAPI.Entities
 
         public int StatusId { get; set; }
 
-        public Tentamen Tentamen { get; set; }
+        [Required]
+        [MaxLength(100)]
+        public string Naam { get; set; }
 
-        public Gebruiker Docent { get; set; }
+        public Tentamen? Tentamen { get; set; }
 
-        public Status Status { get; set; }
+        public Gebruiker? Docent { get; set; }
 
-        public List<Beoordelingsonderdeel> Beoordelingsonderdelen { get; set; }
+        public Status? Status { get; set; }
+
+        public List<Beoordelingsonderdeel>? Beoordelingsonderdelen { get; set; }
     }
 }

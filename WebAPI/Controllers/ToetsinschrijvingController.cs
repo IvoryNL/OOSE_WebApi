@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Constants;
 using WebAPI.Entities;
-using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -33,7 +31,6 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPost("Create")]
         public async Task<IActionResult> Post([FromBody] Toetsinschrijving toetsinschrijving)
         {
@@ -54,7 +51,6 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Toetsinschrijving toetsinschrijving)
         {
@@ -75,7 +71,6 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

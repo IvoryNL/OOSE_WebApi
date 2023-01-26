@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI;
 
@@ -11,9 +12,11 @@ using WebAPI;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230122235022_GebruikerRolIdNonNullable")]
+    partial class GebruikerRolIdNonNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,7 +245,7 @@ namespace WebAPI.Migrations
                     b.Property<decimal>("Grens")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("LeeruitkomstId")
+                    b.Property<int>("LeeruitkomstId")
                         .HasColumnType("int");
 
                     b.Property<string>("Omschrijving")
@@ -318,11 +321,6 @@ namespace WebAPI.Migrations
                     b.Property<int>("DocentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Naam")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
@@ -332,9 +330,6 @@ namespace WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DocentId");
-
-                    b.HasIndex("Naam")
-                        .IsUnique();
 
                     b.HasIndex("StatusId");
 
@@ -473,18 +468,10 @@ namespace WebAPI.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<string>("Naam")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
                     b.Property<int>("OnderwijseenheidId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Naam")
-                        .IsUnique();
 
                     b.HasIndex("OnderwijseenheidId");
 
@@ -1164,7 +1151,9 @@ namespace WebAPI.Migrations
 
                     b.HasOne("WebAPI.Entities.Leeruitkomst", "Leeruitkomst")
                         .WithMany("Beoordelingscriterium")
-                        .HasForeignKey("LeeruitkomstId");
+                        .HasForeignKey("LeeruitkomstId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Beoordelingsonderdeel");
 

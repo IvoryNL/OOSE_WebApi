@@ -13,20 +13,6 @@ namespace WebAPI.Repositories
             _dataContext = dataContext;
         }
 
-        public async Task AddGebruikerToKlas(int id, Gebruiker entity)
-        {
-            var gebruiker = await _dataContext.Gebruikers.Include(g => g.Klassen).FirstOrDefaultAsync(g => g.Id == entity.Id);
-            if (gebruiker != null && entity != null)
-            {
-                var klasIds = entity.Klassen!.Select(k => k.Id).ToList();
-                var klassen = await _dataContext.Klassen.Where(k => klasIds.Contains(k.Id)).ToListAsync();
-                gebruiker.Klassen.Clear();
-                gebruiker.Klassen.AddRange(klassen);
-
-                await _dataContext.SaveChangesAsync();
-            }
-        }
-
         public async Task Create(Gebruiker entity)
         {
             if (entity != null)
@@ -68,6 +54,7 @@ namespace WebAPI.Repositories
                 .Include(g => g.Klassen)
                 .Include(g => g.TentamensVanStudent)
                 .Include(g => g.Beoordelingsmodellen)
+                .Include(g => g.Toetsinschrijvingen)
                 .FirstOrDefaultAsync();
         }
 
@@ -78,12 +65,13 @@ namespace WebAPI.Repositories
                 .Include(g => g.Rol)
                 .Include(g => g.Opleiding)
                 .Include(g => g.Opleidingsprofiel)
+                .Include(g => g.Toetsinschrijvingen)
                 .FirstOrDefaultAsync();
         }
 
         public async Task Update(int id, Gebruiker entity)
         {
-            var gebruiker = await _dataContext.Gebruikers.FirstOrDefaultAsync(g => g.Id == entity.Id);
+            var gebruiker = await _dataContext.Gebruikers.FirstOrDefaultAsync(g => g.Id == id);
             if (gebruiker != null && entity != null)
             {
                 var isExistingEmail = await IsExsisting(id, entity);
@@ -101,6 +89,20 @@ namespace WebAPI.Repositories
                 gebruiker.Achternaam = entity.Achternaam;                
 
                 _dataContext.Gebruikers.Update(gebruiker);
+                var result = await _dataContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task KoppelStudentAanKlas(int id, Gebruiker entity)
+        {
+            var gebruiker = await _dataContext.Gebruikers.Include(g => g.Klassen).FirstOrDefaultAsync(g => g.Id == entity.Id);
+            if (gebruiker != null && entity != null)
+            {
+                var klasIds = entity.Klassen!.Select(k => k.Id).ToList();
+                var klassen = await _dataContext.Klassen.Where(k => klasIds.Contains(k.Id)).ToListAsync();
+                gebruiker.Klassen.Clear();
+                gebruiker.Klassen.AddRange(klassen);
+
                 await _dataContext.SaveChangesAsync();
             }
         }

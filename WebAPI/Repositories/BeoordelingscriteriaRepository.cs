@@ -77,7 +77,7 @@ namespace WebAPI.Repositories
                 beoordelingscriteria.Grens = entity.Grens;
                 beoordelingscriteria.Verplicht = entity.Verplicht;
 
-                _dataContext.Beoordelingscriterium.Update(entity); 
+                _dataContext.Beoordelingscriterium.Update(beoordelingscriteria); 
                 await _dataContext.SaveChangesAsync();
             }
         }

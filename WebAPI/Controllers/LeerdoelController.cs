@@ -44,7 +44,15 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _leerdoelRepository.Create(leerdoel);
+            try
+            {
+                await _leerdoelRepository.Create(leerdoel);
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ConflictObjectResult(ex.Message);
+            }
+            
             return Ok();
         }
 
@@ -57,8 +65,15 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _leerdoelRepository.Update(id, leerdoel);
-            await IncreaseVersion(leerdoel.Onderwijseenheid);
+            try
+            {
+                await _leerdoelRepository.Update(id, leerdoel);
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ConflictObjectResult(ex.Message);
+            }
+            
             return Ok();
         }
 

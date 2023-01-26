@@ -86,6 +86,9 @@ namespace WebAPI
                     .HasOne(b => b.Leeruitkomst)
                     .WithMany(l => l.Beoordelingscriterium)
                     .HasForeignKey(b => b.LeeruitkomstId);
+                beoordelingscriteria
+                    .Property(b => b.LeeruitkomstId)
+                    .IsRequired(false);
             });
 
             modelBuilder.Entity<Beoordelingsdimensie>(beoordelingsdimensie =>
@@ -101,6 +104,9 @@ namespace WebAPI
 
             modelBuilder.Entity<Beoordelingsmodel>(beoordelingsmodel =>
             {
+                beoordelingsmodel
+                    .HasIndex(b => b.Naam)
+                    .IsUnique();
                 beoordelingsmodel
                     .HasOne(b => b.Tentamen)
                     .WithOne(t => t.Beoordelingsmodel)
@@ -172,24 +178,11 @@ namespace WebAPI
                     .UsingEntity(eb => eb.ToTable("Klas_Onderwijsuitvoering"));
             });
 
-            //modelBuilder.Entity<Klas_Gebruiker>(klas_gebruiker =>
-            //{
-            //    klas_gebruiker
-            //        .HasKey(k => new { k.GebruikerId, k.KlasId });
-
-            //    klas_gebruiker
-            //        .HasOne(kg => kg.Gebruiker)
-            //        .WithMany(kg => kg.Klas_Gebruiker)
-            //        .HasForeignKey(kg => kg.GebruikerId);
-
-            //    klas_gebruiker
-            //        .HasOne(kg => kg.Klas)
-            //        .WithMany(kg => kg.Klas_Gebruiker)
-            //        .HasForeignKey(kg => kg.KlasId);
-            //});
-
             modelBuilder.Entity<Leerdoel>(leerdoel =>
             {
+                leerdoel
+                    .HasIndex(l => l.Naam)
+                    .IsUnique();
                 leerdoel
                     .HasOne(l => l.Onderwijseenheid)
                     .WithMany(o => o.Leerdoelen)
@@ -364,9 +357,9 @@ namespace WebAPI
                     .UsingEntity(eb => eb.ToTable("Tentamen_Planning"));
             });
 
-            modelBuilder.Entity<TentamenVanStudent>(tentamenUpload =>
+            modelBuilder.Entity<TentamenVanStudent>(tentamenVanStudent =>
             {
-                tentamenUpload
+                tentamenVanStudent
                     .HasOne(t => t.Student)
                     .WithMany(s => s.TentamensVanStudent)
                     .HasForeignKey(t => t.StudentId);
@@ -379,7 +372,7 @@ namespace WebAPI
                     .IsUnique();
                 toetsinschrijving
                     .HasOne(t => t.Student)
-                    .WithMany()
+                    .WithMany(s => s.Toetsinschrijvingen)
                     .HasForeignKey(t => t.StudentId);
                 toetsinschrijving
                     .HasOne(t => t.Tentamen)

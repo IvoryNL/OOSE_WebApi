@@ -59,30 +59,6 @@ namespace WebAPI.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Onderwijsmodule?> GetWithRelationshipsById(int id)
-        {
-            return await _dataContext.Onderwijsmodules
-                .Where(o => o.Id == id)
-                .Include(o => o.Onderwijseenheden)
-                .ThenInclude(o => o.Leerdoelen)
-                .ThenInclude(o => o.Leeruitkomsten)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<bool> IncreaseVersion(int id)
-        {
-            var onderwijsmodule = await _dataContext.Onderwijsmodules.Where(o => o.Id == id).FirstOrDefaultAsync();
-            if (onderwijsmodule != null)
-            {
-                onderwijsmodule.Versie += 0.01m;
-
-                _dataContext.Onderwijsmodules.Update(onderwijsmodule);
-                await _dataContext.SaveChangesAsync();
-            }
-
-            return true;
-        }
-
         public async Task Update(int id, Onderwijsmodule entity)
         {
             var onderwijsmodule = await _dataContext.Onderwijsmodules.Where(o => o.Id == id).FirstOrDefaultAsync();
@@ -108,6 +84,53 @@ namespace WebAPI.Repositories
                 _dataContext.Onderwijsmodules.Update(onderwijsmodule);
                 await _dataContext.SaveChangesAsync();
             }
+        }
+
+        public async Task<Onderwijsmodule?> GetOnderwijsmoduleVoorExportById(int id)
+        {
+            return await _dataContext.Onderwijsmodules
+                .Where(o => o.Id == id)
+                .Include(o => o.Onderwijseenheden)
+                .ThenInclude(o => o.Leerdoelen)
+                .ThenInclude(o => o.Leeruitkomsten)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Onderwijsmodule>> GetAllOnderwijsmodulesViaOpleidingId(int opleidingId)
+        {
+            return await _dataContext.Onderwijsmodules
+                .Where(o => o.OpleidingId == opleidingId)
+                .Include(o => o.Opleiding)
+                .ToListAsync();
+        }
+
+        public async Task VoegOnderwijseenheidToe(int id, Onderwijseenheid entity)
+        {
+            var onderwijsmodule = await _dataContext.Onderwijsmodules
+                .Where(o => o.Id == id)
+                .Include(o => o.Onderwijseenheden)
+                .FirstOrDefaultAsync();
+
+            if (!onderwijsmodule.Onderwijseenheden.Any(o => o.Id == entity.Id))
+            {
+                onderwijsmodule.Onderwijseenheden.Add(entity);
+            }
+
+            await _dataContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> IncreaseVersion(int id)
+        {
+            var onderwijsmodule = await _dataContext.Onderwijsmodules.Where(o => o.Id == id).FirstOrDefaultAsync();
+            if (onderwijsmodule != null)
+            {
+                onderwijsmodule.Versie += 0.01m;
+
+                _dataContext.Onderwijsmodules.Update(onderwijsmodule);
+                await _dataContext.SaveChangesAsync();
+            }
+
+            return true;
         }
 
         private async Task<bool> IsExsisting(Onderwijsmodule entity)

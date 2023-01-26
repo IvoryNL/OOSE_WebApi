@@ -31,14 +31,14 @@ namespace WebAPI.Entities
 
         public decimal Versie { get; set; }
 
-        public Opleiding Opleiding { get; set; }
+        public Opleiding? Opleiding { get; set; }
 
-        public Status Status { get; set; }
+        public Status? Status { get; set; }
 
-        public List<Onderwijseenheid> Onderwijseenheden { get; set; }
+        public List<Onderwijseenheid>? Onderwijseenheden { get; set; }
 
-        public List<Gebruiker> Docenten { get; set; }
+        public List<Gebruiker>? Docenten { get; set; }
 
-        public List<Onderwijsuitvoering> Onderwijsuitvoeringen { get; set; }
+        public List<Onderwijsuitvoering>? Onderwijsuitvoeringen { get; set; }
     }
 }

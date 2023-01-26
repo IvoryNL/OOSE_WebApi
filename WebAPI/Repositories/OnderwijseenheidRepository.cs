@@ -43,6 +43,7 @@ namespace WebAPI.Repositories
             return await _dataContext.Onderwijseenheden
                 .Include(o => o.Tentamens)
                 .Include(o => o.Leerdoelen)
+                .ThenInclude(l => l.Leeruitkomsten)
                 .ToListAsync();
         }
 
@@ -52,6 +53,7 @@ namespace WebAPI.Repositories
                 .Where(o => o.Id == id)
                 .Include(o => o.Tentamens)
                 .Include(o => o.Leerdoelen)
+                .ThenInclude(l => l.Leeruitkomsten)
                 .FirstOrDefaultAsync();
         }
 

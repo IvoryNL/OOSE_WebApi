@@ -95,20 +95,6 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPut("AddGebruikerToKlas/{id}")]
-        public async Task<IActionResult> AddGebruikerToKlas(int id, [FromBody] VolledigeGebruikerModelDto volledigeGebruikerModelDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var gebruiker = _volledigeGebruikerModelMapper.MapToEntityModel(volledigeGebruikerModelDto);
-
-            await _gebruikerRepository.AddGebruikerToKlas(id, gebruiker);
-            return Ok();
-        }
-
         [HttpGet("GetGebruikerByEmail/{email}")]
         public async Task<IActionResult> GetGebruikerByEmail(string email)
         {
@@ -127,6 +113,20 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             await _gebruikerRepository.Delete(id);
+            return Ok();
+        }
+
+        [HttpPut("KoppelStudentAanKlas/{id}")]
+        public async Task<IActionResult> KoppelStudentAanKlas(int id, [FromBody] VolledigeGebruikerModelDto volledigeGebruikerModelDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var gebruiker = _volledigeGebruikerModelMapper.MapToEntityModel(volledigeGebruikerModelDto);
+
+            await _gebruikerRepository.KoppelStudentAanKlas(id, gebruiker);
             return Ok();
         }
     }

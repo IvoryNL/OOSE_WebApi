@@ -1,14 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using WebAPI.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.Handlers.Interfaces;
-using WebAPI.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ConsistentieCheckController : ControllerBase
     {
         private readonly IHandlerAsync<bool> _handler;
@@ -18,12 +16,19 @@ namespace WebAPI.Controllers
             _handler = handler;
         }
 
-        [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<bool>> Get(int id)
+        [HttpGet("ConsistentieCheckCoverage/{onderwijsmoduleId}")]
+        public async Task<ActionResult<bool>> ConsistentieCheckCoverage(int onderwijsmoduleId)
         {
-            var test  = await _handler.GetAsync(id);
+            var result  = await _handler.ConsistentieCheckCoverageHandlerAsync(onderwijsmoduleId);
             
-            return Ok();
+            return Ok(result);
+        }
+        [HttpGet("ConsistentieCheckTentamenPlanning/{onderwijsuitvoeringId}")]
+        public async Task<ActionResult<bool>> ConsistentieCheckTentamenPlanning(int onderwijsuitvoeringId)
+        {
+            var result = await _handler.ConsistentieCheckTentamenPlanningHandlerAsync(onderwijsuitvoeringId);
+
+            return Ok(result);
         }
     }
 }

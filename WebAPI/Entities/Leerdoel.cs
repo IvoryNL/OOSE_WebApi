@@ -8,6 +8,10 @@ namespace WebAPI.Entities
 
         public int OnderwijseenheidId { get; set; }
 
+        [MaxLength(80)]
+        [Required]
+        public string Naam { get; set; }
+
         [MaxLength(150)]
         public string Beschrijving { get; set; }
 
