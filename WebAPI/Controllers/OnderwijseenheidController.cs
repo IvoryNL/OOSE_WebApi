@@ -13,12 +13,10 @@ namespace WebAPI.Controllers
     public class OnderwijseenheidController : ControllerBase
     {
         private readonly IRepository<Onderwijseenheid> _onderwijseenheidRepository;
-        private readonly IOnderwijsmoduleRepository<Onderwijsmodule> _onderwijsmoduleRepository;
 
-        public OnderwijseenheidController(IRepository<Onderwijseenheid> onderwijseenheidRepository, IOnderwijsmoduleRepository<Onderwijsmodule> onderwijsmoduleRepository)
+        public OnderwijseenheidController(IRepository<Onderwijseenheid> onderwijseenheidRepository)
         {
             _onderwijseenheidRepository = onderwijseenheidRepository;
-            _onderwijsmoduleRepository = onderwijsmoduleRepository;
         }
 
         [HttpGet("GetAll")]
@@ -83,16 +81,6 @@ namespace WebAPI.Controllers
         {
             await _onderwijseenheidRepository.Delete(id);
             return Ok();
-        }
-
-        private async Task<bool> IncreaseVersion(List<Onderwijsmodule> onderwijsmodules)
-        {
-            foreach (var onderwijsmodule in onderwijsmodules)
-            {
-                await _onderwijsmoduleRepository.IncreaseVersion(onderwijsmodule.Id);
-            }
-
-            return true;
         }
     }
 }

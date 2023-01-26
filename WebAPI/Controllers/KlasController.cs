@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Constants;
 using WebAPI.Entities;
-using WebAPI.Repositories;
+using WebAPI.Mappers.Interfaces;
+using WebAPI.Models.Dto;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -13,10 +14,14 @@ namespace WebAPI.Controllers
     public class KlasController : ControllerBase
     {
         private readonly IKlasRepository<Klas> _klasRepository;
+        private readonly IDtoMapper<Klas, KlasModelDto> _klasModelMapper;
 
-        public KlasController(IKlasRepository<Klas> klasRepository)
+        public KlasController(
+            IKlasRepository<Klas> klasRepository, 
+            IDtoMapper<Klas, KlasModelDto> klasModelMapper)
         {
             _klasRepository = klasRepository;
+            _klasModelMapper = klasModelMapper;
         }
 
         [HttpGet("GetAll")]
@@ -27,10 +32,11 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<Klas>> Get(int id)
+        public async Task<ActionResult<KlasModelDto>> Get(int id)
         {
             var result = await _klasRepository.GetById(id);
-            return Ok(result);
+            var klasDto = _klasModelMapper.MapToDtoModel(result);
+            return Ok(klasDto);
         }
 
         [HttpGet("GetKlassenByOpleidingId/{id}")]

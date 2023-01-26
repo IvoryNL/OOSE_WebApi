@@ -12,8 +12,8 @@
 
         public DateTime Datum { get; set; }
 
-        public Gebruiker Student { get; set; }
+        public Gebruiker? Student { get; set; }
 
-        public Beoordeling Beoordeling { get; set; }
+        public Beoordeling? Beoordeling { get; set; }
     }
 }

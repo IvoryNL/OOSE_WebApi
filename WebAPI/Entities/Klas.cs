@@ -11,8 +11,6 @@ namespace WebAPI.Entities
 
         public List<Gebruiker>? Gebruikers { get; set; }
 
-        //public List<Klas_Gebruiker>? Klas_Gebruiker { get; set; }
-
         public List<Onderwijsuitvoering>? Onderwijsuitvoeringen { get; set; }
     }
 }

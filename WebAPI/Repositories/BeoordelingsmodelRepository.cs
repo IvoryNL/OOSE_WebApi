@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Entities;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Repositories
 {
-    public class BeoordelingsmodelRepository : IRepository<Beoordelingsmodel>
+    public class BeoordelingsmodelRepository : IBeoordelingsmodelRepository<Beoordelingsmodel>
     {
         private readonly DataContext _dataContext;
 
@@ -47,6 +48,11 @@ namespace WebAPI.Repositories
                 .Include(b => b.Status)
                 .Include(b => b.Beoordelingsonderdelen)
                 .ToListAsync();
+        }
+
+        public async Task<Beoordelingsmodel?> GetBeoordelingsmodelByTentamenId(int id)
+        {
+            return await _dataContext.Beoordelingsmodellen.Where(b => b.TentamenId == id).FirstOrDefaultAsync();
         }
 
         public async Task<Beoordelingsmodel?> GetById(int id)

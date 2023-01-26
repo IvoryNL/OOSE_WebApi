@@ -16,12 +16,12 @@
 
         public decimal Resultaat { get; set; }
 
-        public Gebruiker Docent { get; set; }
+        public Gebruiker? Docent { get; set; }
 
-        public Beoordelingsmodel Beoordelingsmodel { get; set; }
+        public Beoordelingsmodel? Beoordelingsmodel { get; set; }
 
-        public Status Status { get; set; }
+        public Status? Status { get; set; }
 
-        public TentamenVanStudent TentamenUpload { get; set; }
+        public TentamenVanStudent? TentamenUpload { get; set; }
     }
 }

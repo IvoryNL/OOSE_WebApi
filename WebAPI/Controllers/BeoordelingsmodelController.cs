@@ -11,9 +11,9 @@ namespace WebAPI.Controllers
     [Authorize]
     public class BeoordelingsmodelController : ControllerBase
     {
-        private readonly IRepository<Beoordelingsmodel> _beoordelingsmodelRepository;
+        private readonly IBeoordelingsmodelRepository<Beoordelingsmodel> _beoordelingsmodelRepository;
 
-        public BeoordelingsmodelController(IRepository<Beoordelingsmodel> beoordelingsmodelRepository)
+        public BeoordelingsmodelController(IBeoordelingsmodelRepository<Beoordelingsmodel> beoordelingsmodelRepository)
         {
             _beoordelingsmodelRepository = beoordelingsmodelRepository;
         }
@@ -64,6 +64,13 @@ namespace WebAPI.Controllers
         {
             await _beoordelingsmodelRepository.Delete(id);
             return Ok();
+        }
+
+        [HttpGet("GetBeoordelingsmodelByTentamenId/{id}")]
+        public async Task<ActionResult<Beoordelingsmodel>> GetBeoordelingsmodelByTentamenId(int id)
+        {
+            var result = await _beoordelingsmodelRepository.GetBeoordelingsmodelByTentamenId(id);
+            return Ok(result);
         }
     }
 }

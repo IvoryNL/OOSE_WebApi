@@ -55,7 +55,7 @@ builder.Services.AddScoped<IRepository<Auteur>, AuteurRepository>();
 builder.Services.AddScoped<IRepository<Beoordeling>, BeoordelingRepository>();
 builder.Services.AddScoped<IRepository<Beoordelingscriteria>, BeoordelingscriteriaRepository>();
 builder.Services.AddScoped<IRepository<Beoordelingsdimensie>, BeoordelingsdimensieRepository>();
-builder.Services.AddScoped<IRepository<Beoordelingsmodel>, BeoordelingsmodelRepository>();
+builder.Services.AddScoped<IBeoordelingsmodelRepository<Beoordelingsmodel>, BeoordelingsmodelRepository>();
 builder.Services.AddScoped<IRepository<Beoordelingsonderdeel>, BeoordelingsonderdeelRepository>();
 builder.Services.AddScoped<IGebruikerRepository<Gebruiker>, GebruikerRepository>();
 builder.Services.AddScoped<IKlasRepository<Klas>, KlasRepository>();
@@ -82,6 +82,7 @@ builder.Services.AddScoped<IRepository<Vorm>, VormRepository>();
 builder.Services.AddScoped<IEntityMapper<Gebruiker, CreateGebruikerModelDto>, CreateGebruikerModelMapper>();
 builder.Services.AddScoped<IDtoMapper<Gebruiker, IngelogdeGebruikerModelDto>, IngelogdeGebruikerMapper>();
 builder.Services.AddScoped<IMapper<Gebruiker, VolledigeGebruikerModelDto>, VolledigeGebruikerMapper>();
+builder.Services.AddScoped<IDtoMapper<Klas, KlasModelDto>, KlasModelMapper>(); 
 
 // Handlers
 builder.Services.AddScoped<IHandlerAsync<bool>, ConsistentieCheckHandlerAsync>();
