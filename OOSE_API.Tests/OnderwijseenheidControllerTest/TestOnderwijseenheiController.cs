@@ -12,7 +12,7 @@ namespace WebApi.Tests.OnderwijseenheidControllerTest
 
         public TestOnderwijseenheiController()
         {
-            _repository = new OnderwijseenheidRepositoryTest();
+            _repository = new OnderwijseenheidRepositoryMock();
             _controller = new OnderwijseenheidController(_repository);
         }
 

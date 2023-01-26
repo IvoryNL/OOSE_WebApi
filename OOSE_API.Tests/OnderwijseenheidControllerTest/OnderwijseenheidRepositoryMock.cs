@@ -3,11 +3,11 @@ using WebAPI.Repositories.Interfaces;
 
 namespace WebApi.Tests.OnderwijseenheidControllerTest
 {
-    public class OnderwijseenheidRepositoryTest : IRepository<Onderwijseenheid>
+    public class OnderwijseenheidRepositoryMock : IRepository<Onderwijseenheid>
     {
         public List<Onderwijseenheid> Onderwijseenheden { get; set; }
 
-        public OnderwijseenheidRepositoryTest()
+        public OnderwijseenheidRepositoryMock()
         {
             Onderwijseenheden = new List<Onderwijseenheid>();
             Onderwijseenheden.Add(new Onderwijseenheid { Id = 1, Naam = "Onderwijseenheid 1 test", Beschrijving = "Dit is een test beschrijving", Coordinator = "Jan Jansen", Studiepunten = 30 });
@@ -41,7 +41,7 @@ namespace WebApi.Tests.OnderwijseenheidControllerTest
         {
             var onderwijseenheid = Onderwijseenheden.FirstOrDefault(o => o.Id == id);
             onderwijseenheid.Naam = entity.Naam;
-            onderwijseenheid.Studiepunten = 20;
+            onderwijseenheid.Studiepunten = entity.Studiepunten;
         }
     }
 }
