@@ -57,7 +57,6 @@ namespace WebAPI.Repositories
                 beoordeling.Id = entity.Id;
                 beoordeling.DocentId = entity.DocentId;
                 beoordeling.BeoordelingsmodelId = entity.BeoordelingsmodelId;
-                beoordeling.StatusId = entity.StatusId;
                 beoordeling.Datum = entity.Datum;
                 beoordeling.Resultaat = entity.Resultaat;
 

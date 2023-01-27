@@ -69,7 +69,6 @@ namespace WebAPI.Repositories
                 }
 
                 onderwijsmodule.OpleidingId = entity.OpleidingId;
-                onderwijsmodule.StatusId = entity.StatusId;
                 onderwijsmodule.Naam = entity.Naam;
                 onderwijsmodule.Beschrijving = entity.Beschrijving;
                 onderwijsmodule.Coordinator = entity.Coordinator;

@@ -10,8 +10,6 @@
 
         public int? TentamenUploadId { get; set; }
 
-        public int StatusId { get; set; }
-
         public DateTime Datum { get; set; }
 
         public decimal Resultaat { get; set; }

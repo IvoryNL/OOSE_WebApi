@@ -24,7 +24,6 @@ namespace WebAPI.Repositories
                     ThrowHttpRequestException();
                 }
 
-                entity.StatusId = 3;
                 _dataContext.Beoordelingsmodellen.Add(entity);
                 await _dataContext.SaveChangesAsync();
             }
@@ -76,7 +75,6 @@ namespace WebAPI.Repositories
                 beoordelingsmodel.Naam = entity.Naam;
                 beoordelingsmodel.TentamenId = entity.TentamenId;
                 beoordelingsmodel.DocentId = entity.DocentId;
-                beoordelingsmodel.StatusId = entity.StatusId;
 
                 _dataContext.Beoordelingsmodellen.Update(beoordelingsmodel); 
                 await _dataContext.SaveChangesAsync();

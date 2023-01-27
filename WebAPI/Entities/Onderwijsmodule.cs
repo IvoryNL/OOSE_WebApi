@@ -8,8 +8,6 @@ namespace WebAPI.Entities
 
         public int OpleidingId { get; set; }
 
-        public int StatusId { get; set; }
-
         [MaxLength(50)]
         public string Naam { get; set; }
 
