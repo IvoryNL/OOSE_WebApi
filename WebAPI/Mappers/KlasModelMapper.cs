@@ -16,7 +16,8 @@ namespace WebAPI.Mappers
         public KlasModelDto MapToDtoModel(Klas entityModel)
         {
             var klasModelDto = new KlasModelDto();
-            klasModelDto.Id = entityModel.Id;
+            klasModelDto.Id = entityModel.Id;   
+            klasModelDto.Klasnaam = entityModel.Klasnaam;
             klasModelDto.Gebruikers = entityModel.Gebruikers.Select(g => _volledigeGebruikerMapper.MapToDtoModel(g)).ToList();
 
             return klasModelDto;

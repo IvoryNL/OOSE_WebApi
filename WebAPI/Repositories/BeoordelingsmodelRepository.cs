@@ -44,8 +44,6 @@ namespace WebAPI.Repositories
         {
             return await _dataContext.Beoordelingsmodellen
                 .Include(b => b.Tentamen)
-                .Include(b => b.Docent)
-                .Include(b => b.Status)
                 .Include(b => b.Beoordelingsonderdelen)
                 .ToListAsync();
         }
@@ -60,8 +58,6 @@ namespace WebAPI.Repositories
             return await _dataContext.Beoordelingsmodellen
                 .Where(b => b.Id == id)
                 .Include(b => b.Tentamen)
-                .Include(b => b.Docent)
-                .Include(b => b.Status)
                 .Include(b => b.Beoordelingsonderdelen)
                 .FirstOrDefaultAsync();
         }
@@ -77,6 +73,7 @@ namespace WebAPI.Repositories
                     ThrowHttpRequestException();
                 }
 
+                beoordelingsmodel.Naam = entity.Naam;
                 beoordelingsmodel.TentamenId = entity.TentamenId;
                 beoordelingsmodel.DocentId = entity.DocentId;
                 beoordelingsmodel.StatusId = entity.StatusId;

@@ -20,8 +20,6 @@ namespace WebAPI.Entities
 
         public Gebruiker? Docent { get; set; }
 
-        public Status? Status { get; set; }
-
         public List<Beoordelingsonderdeel>? Beoordelingsonderdelen { get; set; }
     }
 }

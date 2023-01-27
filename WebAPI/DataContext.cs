@@ -30,7 +30,6 @@ namespace WebAPI
         public DbSet<Opleidingsprofiel> Opleidingsprofielen { get; set; }
         public DbSet<Planning> Planningen { get; set; }
         public DbSet<Rol> Rollen { get; set; }
-        public DbSet<Status> Statussen { get; set; }
         public DbSet<Tentamen> Tentamens { get; set; }
         public DbSet<TentamenVanStudent> TentamenVanStudenten { get; set; }
         public DbSet<Toetsinschrijving> Toetsinschrijvingen { get; set; }
@@ -50,7 +49,7 @@ namespace WebAPI
             modelBuilder.Entity<Beoordeling>(beoordeling =>
             {
                 beoordeling
-                    .HasOne(b => b.TentamenUpload)
+                    .HasOne(b => b.TentamenVanStudent)
                     .WithOne(t => t.Beoordeling)
                     .HasForeignKey<Beoordeling>(t => t.TentamenUploadId);
                 beoordeling
@@ -62,11 +61,6 @@ namespace WebAPI
                     .HasOne(b => b.Beoordelingsmodel)
                     .WithOne()
                     .HasForeignKey<Beoordeling>(b => b.BeoordelingsmodelId);
-                beoordeling
-                    .HasOne(b => b.Status)
-                    .WithMany()
-                    .HasForeignKey(b => b.StatusId)
-                    .OnDelete(DeleteBehavior.NoAction);
                 beoordeling
                     .Property(b => b.TentamenUploadId)
                     .IsRequired(false);
@@ -115,11 +109,6 @@ namespace WebAPI
                     .HasOne(b => b.Docent)
                     .WithMany(u => u.Beoordelingsmodellen)
                     .HasForeignKey(b => b.DocentId)
-                    .OnDelete(DeleteBehavior.NoAction);
-                beoordelingsmodel
-                    .HasOne(b => b.Status)
-                    .WithMany()
-                    .HasForeignKey(b => b.StatusId)
                     .OnDelete(DeleteBehavior.NoAction);
             });
 
@@ -270,11 +259,6 @@ namespace WebAPI
                     .HasOne(o => o.Opleiding)
                     .WithMany(o => o.Onderwijsmodules)
                     .HasForeignKey(o => o.OpleidingId);
-                onderwijsmodule
-                    .HasOne(o => o.Status)
-                    .WithMany()
-                    .HasForeignKey(o => o.StatusId)
-                    .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<Onderwijsuitvoering>(onderwijsuitvoering =>
@@ -331,13 +315,6 @@ namespace WebAPI
             {
                 rol
                     .HasIndex(r => r.Naam)
-                    .IsUnique();
-            });
-
-            modelBuilder.Entity<Status>(status =>
-            {
-                status
-                    .HasIndex(s => s.Naam)
                     .IsUnique();
             });
 

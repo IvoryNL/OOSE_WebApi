@@ -33,8 +33,6 @@ namespace WebAPI.Entities
 
         public Opleiding? Opleiding { get; set; }
 
-        public Status? Status { get; set; }
-
         public List<Onderwijseenheid>? Onderwijseenheden { get; set; }
 
         public List<Gebruiker>? Docenten { get; set; }

@@ -72,7 +72,6 @@ builder.Services.AddScoped<IRepository<Opleiding>, OpleidingRepository>();
 builder.Services.AddScoped<IOpleidingsprofielRepository<Opleidingsprofiel>, OpleidingsprofielRepository>();
 builder.Services.AddScoped<IRepository<Planning>, PlanningRepository>();
 builder.Services.AddScoped<IRepository<Rol>, RolRepository>();
-builder.Services.AddScoped<IRepository<Status>, StatusRepository>();
 builder.Services.AddScoped<ITentamenRepository<Tentamen>, TentamenRepository>();
 builder.Services.AddScoped<IRepository<TentamenVanStudent>, TentamensVanStudentRepository>();
 builder.Services.AddScoped<IRepository<Toetsinschrijving>, ToetsinschrijvingRepository>();
@@ -82,7 +81,7 @@ builder.Services.AddScoped<IRepository<Vorm>, VormRepository>();
 builder.Services.AddScoped<IEntityMapper<Gebruiker, CreateGebruikerModelDto>, CreateGebruikerModelMapper>();
 builder.Services.AddScoped<IDtoMapper<Gebruiker, IngelogdeGebruikerModelDto>, IngelogdeGebruikerMapper>();
 builder.Services.AddScoped<IMapper<Gebruiker, VolledigeGebruikerModelDto>, VolledigeGebruikerMapper>();
-builder.Services.AddScoped<IDtoMapper<Klas, KlasModelDto>, KlasModelMapper>(); 
+builder.Services.AddScoped<IDtoMapper<Klas, KlasModelDto>, KlasModelMapper>();
 
 // Handlers
 builder.Services.AddScoped<IHandlerAsync<bool>, ConsistentieCheckHandlerAsync>();

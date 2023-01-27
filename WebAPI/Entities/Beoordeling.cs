@@ -20,8 +20,6 @@
 
         public Beoordelingsmodel? Beoordelingsmodel { get; set; }
 
-        public Status? Status { get; set; }
-
-        public TentamenVanStudent? TentamenUpload { get; set; }
+        public TentamenVanStudent? TentamenVanStudent { get; set; }
     }
 }

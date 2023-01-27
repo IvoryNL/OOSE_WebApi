@@ -35,9 +35,8 @@ namespace WebAPI.Repositories
         public async Task<List<Beoordeling>> GetAll()
         {
             return await _dataContext.Beoordelingen
-                .Include(b => b.TentamenUpload)
+                .Include(b => b.TentamenVanStudent)
                 .Include(b => b.Docent)
-                .Include(b => b.Status)
                 .ToListAsync();
         }
 
@@ -45,9 +44,8 @@ namespace WebAPI.Repositories
         {
             return await _dataContext.Beoordelingen
                 .Where(b =>b.Id == id)
-                .Include(b => b.TentamenUpload)
+                .Include(b => b.TentamenVanStudent)
                 .Include(b => b.Docent)
-                .Include(b => b.Status)
                 .FirstOrDefaultAsync();
         }
 

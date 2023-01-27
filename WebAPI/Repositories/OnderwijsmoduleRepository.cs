@@ -42,7 +42,6 @@ namespace WebAPI.Repositories
         {
             return await _dataContext.Onderwijsmodules
                 .Include(o => o.Opleiding)
-                .Include(o => o.Status)
                 .Include(o => o.Onderwijseenheden)
                 .Include(o => o.Docenten)
                 .ToListAsync();
@@ -53,7 +52,6 @@ namespace WebAPI.Repositories
             return await _dataContext.Onderwijsmodules
                 .Where(o => o.Id == id)
                 .Include(o => o.Opleiding)
-                .Include(o => o.Status)
                 .Include(o => o.Onderwijseenheden)
                 .Include(o => o.Docenten)
                 .FirstOrDefaultAsync();
