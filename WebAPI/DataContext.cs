@@ -51,7 +51,7 @@ namespace WebAPI
                 beoordeling
                     .HasOne(b => b.TentamenVanStudent)
                     .WithOne(t => t.Beoordeling)
-                    .HasForeignKey<Beoordeling>(t => t.TentamenUploadId);
+                    .HasForeignKey<Beoordeling>(t => t.TentamenVanStudentId);
                 beoordeling
                     .HasOne(b => b.Docent)
                     .WithMany(d => d.DocentBeoordelingen)
@@ -62,7 +62,7 @@ namespace WebAPI
                     .WithOne()
                     .HasForeignKey<Beoordeling>(b => b.BeoordelingsmodelId);
                 beoordeling
-                    .Property(b => b.TentamenUploadId)
+                    .Property(b => b.TentamenVanStudentId)
                     .IsRequired(false);
 
             });

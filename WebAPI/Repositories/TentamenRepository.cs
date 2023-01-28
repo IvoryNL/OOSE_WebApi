@@ -105,6 +105,20 @@ namespace WebAPI.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Tentamen>> GetAllTentamensZonderBeoordelingsmodel()
+        {
+            return await _dataContext.Tentamens
+                .Where(t => t.Beoordelingsmodel == null)
+                .ToListAsync();
+        }
+
+        public async Task<List<Tentamen>> GetAllTentamensZonderBeoordelingsmodelVoorWijziging(int beoordelingsmodelId)
+        {
+            return await _dataContext.Tentamens
+                .Where(t => t.Beoordelingsmodel == null || t.Beoordelingsmodel.Id == beoordelingsmodelId)
+                .ToListAsync();
+        }
+
         public async Task OntkoppelLeeruitkomstVanTentamen(int id, int leeruitkomstId)
         {
             var tentamen = await _dataContext.Tentamens.Where(t => t.Id == id).Include(t => t.Leeruitkomsten).FirstOrDefaultAsync();

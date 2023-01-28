@@ -8,7 +8,7 @@
 
         public int BeoordelingsmodelId { get; set; }
 
-        public int? TentamenUploadId { get; set; }
+        public int? TentamenVanStudentId { get; set; }
 
         public DateTime Datum { get; set; }
 

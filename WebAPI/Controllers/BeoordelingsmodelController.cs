@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Constants;
 using WebAPI.Entities;
+using WebAPI.Repositories;
 using WebAPI.Repositories.Interfaces;
 
 namespace WebAPI.Controllers
@@ -41,7 +42,15 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _beoordelingsmodelRepository.Create(beoordelingsmodel);
+            try
+            {
+                await _beoordelingsmodelRepository.Create(beoordelingsmodel);
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ConflictObjectResult(ex.Message);
+            }
+            
             return Ok();
         }
 
@@ -54,7 +63,15 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _beoordelingsmodelRepository.Update(id, beoordelingsmodel);
+            try
+            {
+                await _beoordelingsmodelRepository.Update(id, beoordelingsmodel);
+            }
+            catch (HttpRequestException ex)
+            {
+                return new ConflictObjectResult(ex.Message);
+            }
+            
             return Ok();
         }
 

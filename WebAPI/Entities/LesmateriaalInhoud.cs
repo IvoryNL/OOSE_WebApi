@@ -12,6 +12,6 @@ namespace WebAPI.Entities
 
         public decimal Versie { get; set; }
 
-        public Lesmateriaal Lesmateriaal { get; set; }
+        public Lesmateriaal? Lesmateriaal { get; set; }
     }
 }

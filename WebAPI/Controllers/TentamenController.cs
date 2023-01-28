@@ -89,6 +89,20 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetAllTentamensZonderBeoordelingsmodel")]
+        public async Task<ActionResult<List<Tentamen>>> GetAllTentamensZonderBeoordelingsmodel()
+        {
+            var result = await _tentamenRepository.GetAllTentamensZonderBeoordelingsmodel();
+            return Ok(result);
+        }
+
+        [HttpGet("GetAllTentamensZonderBeoordelingsmodelVoorWijziging/{beoordelingsmodelId}")]
+        public async Task<ActionResult<List<Tentamen>>> GetAllTentamensZonderBeoordelingsmodelVoorWijziging(int beoordelingsmodelId)
+        {
+            var result = await _tentamenRepository.GetAllTentamensZonderBeoordelingsmodelVoorWijziging(beoordelingsmodelId);
+            return Ok(result);
+        }
+
         [Authorize(Roles = $"{Rollen.DOCENT}, {Rollen.ADMIN}")]
         [HttpPut("InplannenTentamen/{id}")]
         public async Task<IActionResult> InplannenTentamen(int id, [FromBody] Tentamen tentamen)
